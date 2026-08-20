@@ -1,0 +1,14 @@
+{
+  "name": "iitp-document-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check lib/documents.mjs && node --check public/app.js",
+    "test": "node --test",
+    "e2e": "node scripts/e2e.mjs"
+  },
+  "dependencies": { "kordoc": "^4.7.3" }
+}

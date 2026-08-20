@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IITP 문서 설명자료 스튜디오</title><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand"><span class="logo">IITP</span><div><strong>Document Strategy Studio</strong><small>Kordoc 기반 HWPX 설명자료 생성</small></div></div><span class="engine"><i></i> Native HWPX</span></header>
+  <main>
+    <section class="hero"><div><span class="eyebrow">DOCUMENT WORKBENCH</span><h1>근거는 선명하게,<br><em>설명자료는 편집 가능하게.</em></h1><p>기술수요·기획보고서 또는 RFP를 Kordoc으로 읽고, 출처와 미결정 사항을 보존한 한국어 설명자료를 만듭니다.</p></div><div class="principles"><div><b>01</b><span>원문 기술 사실만 사용</span></div><div><b>02</b><span>결정 필요값은 그대로 표시</span></div><div><b>03</b><span>Kordoc 검증 후 HWPX 출력</span></div></div></section>
+    <nav class="workflow-tabs" aria-label="워크플로 선택"><button class="tab active" data-workflow="business"><span>A</span><div><strong>사업설명자료</strong><small>기술수요조사서 + 기술기획보고서</small></div></button><button class="tab" data-workflow="task"><span>B</span><div><strong>과제설명자료</strong><small>RFP 기반 과제 안내</small></div></button></nav>
+    <ol class="stepper" aria-label="진행 단계"><li class="active"><b>1</b><span>HWPX 업로드</span></li><li><b>2</b><span>Kordoc 분석</span></li><li><b>3</b><span>초안 편집</span></li><li><b>4</b><span>검증·다운로드</span></li></ol>
+    <section id="uploadStage" class="stage card"><div class="section-head"><div><span class="eyebrow">INPUT</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2></div><p>HWPX · 파일당 최대 30MB</p></div><div id="uploadGrid" class="upload-grid"></div><div class="privacy-note"><strong>작성 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용됩니다. 그 안의 기술 사실·기관·기간·예산·수치는 생성 입력에 포함하지 않습니다.</span></div><div class="actions"><button id="resetBtn" class="button ghost">모두 지우기</button><button id="analyzeBtn" class="button primary" disabled>문서 분석하기 <span>→</span></button></div></section>
+    <section id="analysisStage" class="stage card hidden"><div class="section-head"><div><span class="eyebrow">EXTRACTED SOURCES</span><h2>추출 결과와 출처를 확인하세요</h2></div><span class="verified">✓ Kordoc parsed</span></div><div id="previewGrid" class="preview-grid"></div><div class="actions"><button id="backBtn" class="button ghost">← 파일 바꾸기</button><button id="generateBtn" class="button primary">설명자료 초안 생성 <span>→</span></button></div></section>
+    <section id="editorStage" class="stage card hidden"><div class="section-head"><div><span class="eyebrow">EDITABLE DRAFT</span><h2 id="editorTitle">설명자료 초안</h2></div><span id="charCount" class="counter">0자</span></div><div class="editor-layout"><textarea id="editor" spellcheck="false" aria-label="설명자료 Markdown 편집기"></textarea><aside><h3>출처</h3><div id="provenance"></div><h3>미결정 사항</h3><div id="unresolved"></div><p class="aside-note">다운로드 시 현재 편집 내용을 서버에서 native HWPX로 변환하고 구조 검증·재추출을 수행합니다.</p></aside></div><div class="actions"><button id="analysisBackBtn" class="button ghost">← 추출 결과</button><button id="downloadBtn" class="button primary">검증 후 HWPX 다운로드 <span>↓</span></button></div></section>
+  </main><div id="toast" role="status" aria-live="polite"></div><script type="module" src="/app.js"></script>
+</body></html>
