@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 
 const publicFile = name => readFile(new URL(`../public/${name}`, import.meta.url), 'utf8');
 
-test('home exposes only the two real document workflows in a bright fluid AI studio', async () => {
+test('home exposes two dual-mode document workflows in a bright fluid AI studio', async () => {
   const html = await publicFile('index.html');
   const css = await publicFile('styles.css');
   assert.match(html, /<title>IITP AI 문서 플로우 스튜디오<\/title>/);
@@ -44,18 +44,29 @@ test('home exposes only the two real document workflows in a bright fluid AI stu
   assert.match(html, /<svg class="ai-scene" viewBox="0 0 700 610"/);
   assert.doesNotMatch(html, /CYBER DOCUMENT INTELLIGENCE|SECURE FLOW|AI DOCUMENT CORE/);
   assert.doesNotMatch(css, /--void:#030711|--canvas:#050b18|repeating-linear-gradient\(to bottom/);
-  assert.doesNotMatch(html, /API 키|웹 리서치|트렌드 분석|회의록/);
+  assert.doesNotMatch(html, /API 키|회의록/);
+  assert.match(html, />문서 업로드</);
+  assert.match(html, />기술동향 분석</);
+  assert.match(html, /AI\/인공지능/);
+  assert.match(html, /양자정보통신/);
+  assert.match(html, /실시간 공개 웹 \+ 선택 HWPX/);
+  assert.match(html, /id="trendMarkdownPreview"/);
+  assert.match(html, /id="trendSources"/);
+  assert.match(html, /id="trendCreateBtn"/);
   assert.equal((html.match(/data-workflow=/g) || []).length, 2);
 });
 
 test('dynamic document values remain escaped before HTML insertion', async () => {
   const script = await publicFile('app.js');
   assert.match(script, /function escapeHtml/);
-  assert.match(script, /escapeHtml\(state\.files\[role\.key\]\?\.name/);
+  assert.match(script, /escapeHtml\(current\.files\[role\.key\]\?\.name/);
   assert.match(script, /escapeHtml\(doc\.filename\)/);
   assert.match(script, /escapeHtml\(doc\.textPreview\)/);
-  assert.match(script, /escapeHtml\(x\.filename\)/);
+  assert.match(script, /escapeHtml\(source\.title\)/);
+  assert.match(script, /escapeHtml\(source\.description/);
   assert.match(script, /escapeHtml\(x\.role\)/);
+  assert.match(script, /safeExternalUrl/);
+  assert.match(script, /rel="noopener noreferrer"/);
 });
 
 test('task upload configuration distinguishes required and optional selected sources', async () => {
@@ -65,6 +76,15 @@ test('task upload configuration distinguishes required and optional selected sou
   assert.match(script, /선택 · 연구목표·연구내용·추진체계·성과·기간·예산의 추가 근거/);
   assert.match(script, /filter\(role=>role\.required\)\.every/);
   assert.match(script, /for \(const role of selectedRoles\(\)\)/);
-  assert.match(script, /const roles=selectedRoles\(\)/);
   assert.match(script, /Object\.fromEntries\(selectedRoles\(\)/);
+});
+
+test('workflow and mode state are kept independently', async () => {
+  const script = await publicFile('app.js');
+  assert.match(script, /sessions: \{ business: makeSession\(\), task: makeSession\(\) \}/);
+  assert.match(script, /mode: 'upload'/);
+  assert.match(script, /upload: \{ stage: 'intake'/);
+  assert.match(script, /trend: \{ stage: 'intake'/);
+  assert.match(script, /\/api\/trends\/analyze/);
+  assert.match(script, /`\/api\/generate\/\$\{state\.workflow\}-trend`/);
 });

@@ -106,11 +106,31 @@
             <button class="tab active business" type="button" data-workflow="business" aria-pressed="true"><span class="tab-icon" aria-hidden="true">01</span><span class="tab-copy"><small>두 문서 통합</small><strong>사업설명자료</strong><em>기술수요조사서 + 기술기획보고서</em></span><span class="tab-state"><i aria-hidden="true"></i> 선택됨</span></button>
             <button class="tab task" type="button" data-workflow="task" aria-pressed="false"><span class="tab-icon" aria-hidden="true">02</span><span class="tab-copy"><small>선택형 추가 근거</small><strong>과제설명자료</strong><em>RFP + 연구개발계획서(선택)</em></span><span class="tab-state"><i aria-hidden="true"></i> 선택</span></button>
           </nav>
+          <div class="mode-tabs" role="tablist" aria-label="입력 방식 선택">
+            <button id="uploadModeTab" class="mode-tab active" type="button" role="tab" aria-selected="true" data-mode="upload"><span aria-hidden="true">⇧</span><strong>문서 업로드</strong><small>기존 HWPX 근거 문서로 생성</small></button>
+            <button id="trendModeTab" class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="trend"><span aria-hidden="true">⌁</span><strong>기술동향 분석</strong><small>실시간 공개 웹 + 선택 HWPX</small></button>
+          </div>
           <section id="uploadStage" class="stage card" aria-labelledby="uploadTitle">
             <div class="section-head"><div><span class="eyebrow">01 / SOURCE INTAKE</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2><p>분석에 사용할 원본 HWPX를 역할에 맞게 선택합니다.</p></div><span class="file-rule"><i aria-hidden="true"></i> HWPX · 각 30MB 이하</span></div>
             <div id="uploadGrid" class="upload-grid"></div>
             <div class="privacy-note"><span class="note-icon" aria-hidden="true">i</span><div><strong>참고자료 사용 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용합니다. 기술 사실·기관·기간·예산·수치는 생성 입력에서 제외됩니다.</span></div></div>
             <div class="actions"><button id="resetBtn" class="button ghost" type="button">선택 초기화</button><button id="analyzeBtn" class="button primary" type="button" disabled>문서 분석하기 <span aria-hidden="true">→</span></button></div>
+          </section>
+          <section id="trendStage" class="stage card trend-card hidden" aria-labelledby="trendTitle">
+            <div class="section-head"><div><span class="eyebrow">01 / LIVE &amp; DOCUMENT EVIDENCE</span><h2 id="trendTitle">ICT 기술동향 근거를 모아보세요</h2><p>공개 RSS와 선택한 HWPX의 근거를 분리해 분석합니다.</p></div><span class="live-badge"><i aria-hidden="true"></i> 공개 웹 실시간 수집</span></div>
+            <div class="trend-form">
+              <label class="field-control"><span>ICT 분야</span><select id="trendField" aria-label="ICT 분야"><option value="ai">AI/인공지능</option><option value="semiconductor">반도체</option><option value="cloud">클라우드</option><option value="cybersecurity">사이버보안</option><option value="quantum">양자정보통신</option><option value="network6g">6G/네트워크</option><option value="robotics">로봇/스마트제조</option><option value="dataSoftware">데이터/소프트웨어</option><option value="other">기타 ICT</option></select></label>
+              <label class="field-control topic-control"><span>기술·주제 키워드</span><input id="trendTopic" type="text" maxlength="180" placeholder="예: 생성형 AI 신뢰성 평가, 양자내성암호 전환" autocomplete="off"><small>구체적인 기술, 문제, 적용 영역을 자유롭게 입력하세요.</small></label>
+            </div>
+            <label id="trendUploadCard" class="upload-card trend-upload"><div class="upload-icon">⇧</div><h3>기술동향 보고서·기획문서 HWPX <em>선택</em></h3><p>내부 문서 근거를 공개 웹 근거와 별도로 비교합니다.</p><input id="trendFile" type="file" accept=".hwpx"><div id="trendSelected" class="selected hidden"></div></label>
+            <div class="privacy-note trend-note"><span class="note-icon" aria-hidden="true">i</span><div><strong>수집 및 근거 경계</strong><span>서버는 입력 URL을 가져오지 않습니다. 검증된 Google News RSS 주소만 호출하며, 공식기관 링크는 원문 추가 확인용으로 제공합니다. 수집 실패도 결과에 그대로 표시합니다.</span></div></div>
+            <div class="actions"><button id="trendResetBtn" class="button ghost" type="button">입력 초기화</button><button id="trendAnalyzeBtn" class="button primary trend-primary" type="button" disabled>기술동향 분석하기 <span aria-hidden="true">→</span></button></div>
+          </section>
+          <section id="trendAnalysisStage" class="stage card trend-card hidden" aria-labelledby="trendAnalysisTitle">
+            <div class="section-head"><div><span class="eyebrow">02 / EVIDENCE REVIEW</span><h2 id="trendAnalysisTitle">기술동향 분석과 출처를 확인하세요</h2><p>웹 RSS와 업로드 문서의 근거가 섞이지 않도록 구분했습니다.</p></div><span id="trendStatus" class="verified"><i aria-hidden="true"></i> 분석 완료</span></div>
+            <div id="trendSourceSummary" class="trend-summary" aria-live="polite"></div>
+            <div class="trend-review-layout"><div><h3 class="panel-title">분석 미리보기</h3><pre id="trendMarkdownPreview" class="trend-markdown"></pre></div><aside><h3 class="panel-title">출처 및 상태</h3><div id="trendSources" class="trend-sources"></div><h3 class="panel-title">미해결 항목</h3><div id="trendUnresolved"></div></aside></div>
+            <div class="actions"><button id="trendBackBtn" class="button ghost" type="button">← 분석 조건 바꾸기</button><button id="trendCreateBtn" class="button primary trend-primary" type="button">설명자료 만들기 <span aria-hidden="true">→</span></button></div>
           </section>
           <section id="analysisStage" class="stage card hidden" aria-labelledby="analysisTitle">
             <div class="section-head"><div><span class="eyebrow">02 / SOURCE REVIEW</span><h2 id="analysisTitle">추출 결과와 출처를 확인하세요</h2><p>초안을 만들기 전에 원문에서 읽은 내용과 문서 정보를 검토합니다.</p></div><span class="verified"><i aria-hidden="true"></i> 분석 완료</span></div>

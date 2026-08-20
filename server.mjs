@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateBusiness, generateTask, parseDocument, exportHwpx, MAX_UPLOAD } from './lib/documents.mjs';
+import { analyzeTrends, generateBusinessTrend, generateTaskTrend } from './lib/trends.mjs';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const publicRoot = join(root, 'public');
@@ -12,11 +13,11 @@ const sendJson = (res, value, status=200) => { const data=Buffer.from(JSON.strin
 const readBody = (req, limit) => new Promise((resolve,reject)=>{ const chunks=[]; let size=0; let failed=false; req.on('data',chunk=>{ if(failed)return; size+=chunk.length; if(size>limit){failed=true;reject(Object.assign(new Error('요청 크기 제한을 초과했습니다.'),{status:413}));}else chunks.push(chunk)});req.on('end',()=>{if(!failed)resolve(Buffer.concat(chunks))});req.on('error',reject); });
 const safeName = value => String(value || 'IITP_설명자료').replace(/[\\/:*?"<>|\r\n]/g,'_').slice(0,120);
 
-export function createServer() {
+export function createServer(options = {}) {
   return http.createServer(async (req,res) => {
     try {
       const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-      if (req.method === 'GET' && url.pathname === '/api/health') return sendJson(res,{ok:true,engine:'kordoc',workflows:['business','task']});
+      if (req.method === 'GET' && url.pathname === '/api/health') return sendJson(res,{ok:true,engine:'kordoc',workflows:['business','task'],modes:['upload','trend']});
       if (req.method === 'POST' && url.pathname === '/api/parse') {
         const filename = decodeURIComponent(req.headers['x-filename'] || '');
         const role = String(req.headers['x-document-role'] || 'document');
@@ -31,6 +32,18 @@ export function createServer() {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
         if (!input.rfp?.markdown) return sendJson(res,{error:'RFP가 필요합니다.'},400);
         return sendJson(res,generateTask(input.rfp,input.researchPlan || null));
+      }
+      if (req.method === 'POST' && url.pathname === '/api/trends/analyze') {
+        const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
+        return sendJson(res,await (options.analyzeTrends || analyzeTrends)(input));
+      }
+      if (req.method === 'POST' && url.pathname === '/api/generate/business-trend') {
+        const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
+        return sendJson(res,generateBusinessTrend(input.analysis));
+      }
+      if (req.method === 'POST' && url.pathname === '/api/generate/task-trend') {
+        const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
+        return sendJson(res,generateTaskTrend(input.analysis));
       }
       if (req.method === 'POST' && url.pathname === '/api/export') {
         const input=JSON.parse((await readBody(req,1_000_000)).toString('utf8'));
