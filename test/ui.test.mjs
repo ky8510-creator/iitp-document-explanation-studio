@@ -8,10 +8,8 @@ test('home exposes only the two real document workflows in a bright fluid AI stu
   const html = await publicFile('index.html');
   const css = await publicFile('styles.css');
   assert.match(html, /<title>IITP AI 문서 플로우 스튜디오<\/title>/);
-  assert.match(html, /기술동향·기획보고서를/);
-  assert.match(html, /사업설명자료로,/);
-  assert.match(html, /RFP·연구개발계획서를/);
-  assert.match(html, /과제설명자료로\./);
+  assert.match(html, /사업·과제 핵심정보 기반의/);
+  assert.match(html, /부처보고자료 생성 지원/);
   assert.doesNotMatch(html, /근거는 선명하게|문서는 유연하게/);
   assert.match(html, /EVIDENCE-LED DOCUMENT FLOW/);
   assert.match(html, /AI DOCUMENT WORKBENCH/);
