@@ -12,7 +12,7 @@ const config = {
 
 function escapeHtml(value) { const node=document.createElement('div'); node.textContent=String(value??''); return node.innerHTML; }
 function toast(message) { const el=$('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove('show'),2600); }
-function setStep(index) { document.querySelectorAll('.stepper li').forEach((el,i)=>{el.classList.toggle('active',i===index);el.classList.toggle('done',i<index)}); }
+function setStep(index) { document.querySelectorAll('.stepper li').forEach((el,i)=>{const active=i===index;el.classList.toggle('active',active);el.classList.toggle('done',i<index);if(active)el.setAttribute('aria-current','step');else el.removeAttribute('aria-current')}); }
 function show(stage,index) { ['uploadStage','analysisStage','editorStage'].forEach(id=>$(`#${id}`).classList.toggle('hidden',id!==stage)); setStep(index); window.scrollTo({top:document.querySelector('.workflow-tabs').offsetTop-20,behavior:'smooth'}); }
 function ready() { return config[state.workflow].roles.every(role=>state.files[role.key]); }
 
@@ -53,5 +53,5 @@ function renderEditor(){const result=state.result;$('#editorTitle').textContent=
 function updateCount(){$('#charCount').textContent=$('#editor').value.length.toLocaleString()+'자'}
 async function download(){const button=$('#downloadBtn');button.classList.add('busy');button.textContent='Kordoc 검증·변환 중…';try{const response=await request('/api/export',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({markdown:$('#editor').value,filename:state.result.title})});const blob=await response.blob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`${state.result.title}.hwpx`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStep(3);toast(`구조 검증 완료 · 재추출 ${response.headers.get('x-kordoc-roundtrip-chars')||'-'}자`)}catch(error){toast(error.message)}finally{button.classList.remove('busy');button.innerHTML='검증 후 HWPX 다운로드 <span>↓</span>'}}
 
-document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===tab));state.workflow=tab.dataset.workflow;reset()});
+document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>{const active=x===tab;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active))});state.workflow=tab.dataset.workflow;reset()});
 $('#resetBtn').onclick=reset;$('#analyzeBtn').onclick=analyze;$('#backBtn').onclick=()=>show('uploadStage',0);$('#generateBtn').onclick=generate;$('#analysisBackBtn').onclick=()=>show('analysisStage',1);$('#downloadBtn').onclick=download;$('#editor').oninput=updateCount;renderUploads();

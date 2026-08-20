@@ -1,17 +1,107 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>IITP 문서 설명자료 스튜디오</title><link rel="stylesheet" href="/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>ICT R&amp;D 문서 워크스페이스</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header class="topbar"><div class="brand"><span class="logo">IITP</span><div><strong>Document Strategy Studio</strong><small>Kordoc 기반 HWPX 설명자료 생성</small></div></div><span class="engine"><i></i> Native HWPX</span></header>
-  <main>
-    <section class="hero"><div><span class="eyebrow">DOCUMENT WORKBENCH</span><h1>근거는 선명하게,<br><em>설명자료는 편집 가능하게.</em></h1><p>기술수요·기획보고서 또는 RFP를 Kordoc으로 읽고, 출처와 미결정 사항을 보존한 한국어 설명자료를 만듭니다.</p></div><div class="principles"><div><b>01</b><span>원문 기술 사실만 사용</span></div><div><b>02</b><span>결정 필요값은 그대로 표시</span></div><div><b>03</b><span>Kordoc 검증 후 HWPX 출력</span></div></div></section>
-    <nav class="workflow-tabs" aria-label="워크플로 선택"><button class="tab active" data-workflow="business"><span>A</span><div><strong>사업설명자료</strong><small>기술수요조사서 + 기술기획보고서</small></div></button><button class="tab" data-workflow="task"><span>B</span><div><strong>과제설명자료</strong><small>RFP 기반 과제 안내</small></div></button></nav>
-    <ol class="stepper" aria-label="진행 단계"><li class="active"><b>1</b><span>HWPX 업로드</span></li><li><b>2</b><span>Kordoc 분석</span></li><li><b>3</b><span>초안 편집</span></li><li><b>4</b><span>검증·다운로드</span></li></ol>
-    <section id="uploadStage" class="stage card"><div class="section-head"><div><span class="eyebrow">INPUT</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2></div><p>HWPX · 파일당 최대 30MB</p></div><div id="uploadGrid" class="upload-grid"></div><div class="privacy-note"><strong>작성 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용됩니다. 그 안의 기술 사실·기관·기간·예산·수치는 생성 입력에 포함하지 않습니다.</span></div><div class="actions"><button id="resetBtn" class="button ghost">모두 지우기</button><button id="analyzeBtn" class="button primary" disabled>문서 분석하기 <span>→</span></button></div></section>
-    <section id="analysisStage" class="stage card hidden"><div class="section-head"><div><span class="eyebrow">EXTRACTED SOURCES</span><h2>추출 결과와 출처를 확인하세요</h2></div><span class="verified">✓ Kordoc parsed</span></div><div id="previewGrid" class="preview-grid"></div><div class="actions"><button id="backBtn" class="button ghost">← 파일 바꾸기</button><button id="generateBtn" class="button primary">설명자료 초안 생성 <span>→</span></button></div></section>
-    <section id="editorStage" class="stage card hidden"><div class="section-head"><div><span class="eyebrow">EDITABLE DRAFT</span><h2 id="editorTitle">설명자료 초안</h2></div><span id="charCount" class="counter">0자</span></div><div class="editor-layout"><textarea id="editor" spellcheck="false" aria-label="설명자료 Markdown 편집기"></textarea><aside><h3>출처</h3><div id="provenance"></div><h3>미결정 사항</h3><div id="unresolved"></div><p class="aside-note">다운로드 시 현재 편집 내용을 서버에서 native HWPX로 변환하고 구조 검증·재추출을 수행합니다.</p></aside></div><div class="actions"><button id="analysisBackBtn" class="button ghost">← 추출 결과</button><button id="downloadBtn" class="button primary">검증 후 HWPX 다운로드 <span>↓</span></button></div></section>
-  </main><div id="toast" role="status" aria-live="polite"></div><script type="module" src="/app.js"></script>
-</body></html>
+  <a class="skip-link" href="#workspace">본문으로 바로가기</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="ICT R&D 문서 워크스페이스 홈">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span class="brand-copy"><strong>ICT R&amp;D 문서 워크스페이스</strong><small>정보통신기획평가원 · IITP</small></span>
+      </a>
+      <span class="engine"><i aria-hidden="true"></i> Kordoc · Native HWPX</span>
+    </div>
+  </header>
+
+  <main id="workspace">
+    <section class="welcome" aria-labelledby="welcomeTitle">
+      <div class="welcome-copy">
+        <span class="welcome-badge"><i aria-hidden="true"></i> ICT R&amp;D DOCUMENT WORKBENCH</span>
+        <h1 id="welcomeTitle">근거 문서에서 시작해,<br><span>편집 가능한 설명자료로.</span></h1>
+        <p>HWPX 원문을 구조적으로 읽고 출처와 미결정 사항을 보존합니다. 검토한 초안은 한글에서 바로 편집할 수 있는 native HWPX로 내보냅니다.</p>
+        <div class="welcome-points" aria-label="작성 원칙">
+          <span><i class="mint" aria-hidden="true">✓</i> 원문 기술 사실만 사용</span>
+          <span><i class="purple" aria-hidden="true">◇</i> 미결정 값 명시</span>
+          <span><i class="blue" aria-hidden="true">↓</i> HWPX 구조 검증</span>
+        </div>
+      </div>
+      <aside class="welcome-guide" aria-label="작업 흐름 안내">
+        <div class="guide-head"><span>WORKFLOW</span><strong>문서 작성 흐름</strong></div>
+        <ol>
+          <li><b>01</b><span><strong>Input</strong><small>근거 HWPX 업로드</small></span></li>
+          <li><b>02</b><span><strong>Process</strong><small>구조 분석 및 초안 구성</small></span></li>
+          <li><b>03</b><span><strong>Output</strong><small>편집·검증 후 HWPX 저장</small></span></li>
+        </ol>
+      </aside>
+    </section>
+
+    <div class="section-cap">
+      <div><span class="section-kicker">WORKSPACE</span><h2>작업 유형을 선택하세요</h2></div>
+      <p>실제 입력 문서에 맞는 워크플로를 선택합니다.</p>
+    </div>
+
+    <nav class="workflow-tabs" aria-label="워크플로 선택">
+      <button class="tab active business" type="button" data-workflow="business" aria-pressed="true">
+        <span class="tab-icon" aria-hidden="true">A</span>
+        <span class="tab-copy"><small>WORKFLOW A</small><strong>사업설명자료 만들기</strong><em>기술수요조사서 + 기술기획보고서</em></span>
+        <span class="tab-arrow" aria-hidden="true">→</span>
+      </button>
+      <button class="tab task" type="button" data-workflow="task" aria-pressed="false">
+        <span class="tab-icon" aria-hidden="true">B</span>
+        <span class="tab-copy"><small>WORKFLOW B</small><strong>과제설명자료 만들기</strong><em>RFP 기반 과제 안내</em></span>
+        <span class="tab-arrow" aria-hidden="true">→</span>
+      </button>
+    </nav>
+
+    <ol class="stepper" aria-label="진행 단계">
+      <li class="active" aria-current="step"><b>01</b><span><small>INPUT</small>문서 입력</span></li>
+      <li><b>02</b><span><small>PROCESS</small>분석 및 생성</span></li>
+      <li><b>03</b><span><small>OUTPUT</small>편집 및 내보내기</span></li>
+    </ol>
+
+    <section id="uploadStage" class="stage card" aria-labelledby="uploadTitle">
+      <div class="accent-line" aria-hidden="true"></div>
+      <div class="section-head">
+        <div><span class="eyebrow">INPUT · SOURCE DOCUMENTS</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2><p>분석에 사용할 원본 HWPX를 선택합니다.</p></div>
+        <span class="file-rule">HWPX · 파일당 최대 30MB</span>
+      </div>
+      <div id="uploadGrid" class="upload-grid"></div>
+      <div class="privacy-note"><span class="note-icon" aria-hidden="true">i</span><div><strong>작성 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용됩니다. 그 안의 기술 사실·기관·기간·예산·수치는 생성 입력에 포함하지 않습니다.</span></div></div>
+      <div class="actions"><button id="resetBtn" class="button ghost" type="button">모두 지우기</button><button id="analyzeBtn" class="button primary" type="button" disabled>문서 분석하기 <span>→</span></button></div>
+    </section>
+
+    <section id="analysisStage" class="stage card hidden" aria-labelledby="analysisTitle">
+      <div class="accent-line" aria-hidden="true"></div>
+      <div class="section-head">
+        <div><span class="eyebrow">PROCESS · EXTRACTED SOURCES</span><h2 id="analysisTitle">추출 결과와 출처를 확인하세요</h2><p>초안을 만들기 전, 원문에서 읽은 내용과 문서 정보를 검토합니다.</p></div>
+        <span class="verified">✓ Kordoc parsed</span>
+      </div>
+      <div id="previewGrid" class="preview-grid"></div>
+      <div class="actions"><button id="backBtn" class="button ghost" type="button">← 파일 바꾸기</button><button id="generateBtn" class="button primary" type="button">설명자료 초안 생성 <span>→</span></button></div>
+    </section>
+
+    <section id="editorStage" class="stage card hidden" aria-labelledby="editorTitle">
+      <div class="accent-line" aria-hidden="true"></div>
+      <div class="section-head">
+        <div><span class="eyebrow">OUTPUT · EDITABLE DRAFT</span><h2 id="editorTitle">설명자료 초안</h2><p>내용을 직접 수정한 뒤 native HWPX로 내보냅니다.</p></div>
+        <span id="charCount" class="counter">0자</span>
+      </div>
+      <div class="editor-layout">
+        <div class="editor-panel"><div class="editor-toolbar"><span>MARKDOWN CONTENT</span><small>자동 저장 없이 현재 화면에서 편집됩니다.</small></div><textarea id="editor" spellcheck="false" aria-label="설명자료 Markdown 편집기"></textarea></div>
+        <aside aria-label="문서 근거와 확인 사항"><h3>출처</h3><div id="provenance"></div><h3>미결정 사항</h3><div id="unresolved"></div><p class="aside-note">다운로드 시 현재 편집 내용을 서버에서 native HWPX로 변환하고 구조 검증·재추출을 수행합니다.</p></aside>
+      </div>
+      <div class="actions"><button id="analysisBackBtn" class="button ghost" type="button">← 추출 결과</button><button id="downloadBtn" class="button primary" type="button">검증 후 HWPX 다운로드 <span>↓</span></button></div>
+    </section>
+  </main>
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
