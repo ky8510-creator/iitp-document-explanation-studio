@@ -13,6 +13,8 @@ test('home exposes only the two real document workflows in a bright fluid AI stu
   assert.doesNotMatch(html, /근거는 선명하게|문서는 유연하게/);
   assert.match(html, /EVIDENCE-LED DOCUMENT FLOW/);
   assert.match(html, /AI DOCUMENT WORKBENCH/);
+  assert.match(html, /부처 보고용 설명자료 만들기/);
+  assert.doesNotMatch(html, /필요한 문서 흐름을 선택하세요/);
   assert.match(html, /SOURCE INTAKE/);
   assert.match(html, /SOURCE REVIEW/);
   assert.match(html, /EDIT &amp; EXPORT/);
