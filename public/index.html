@@ -3,113 +3,128 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#050b18">
-  <title>IITP AI 문서 스튜디오</title>
+  <meta name="theme-color" content="#f8fbff">
+  <title>IITP AI 문서 플로우 스튜디오</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <a class="skip-link" href="#workbenchPanel">작업 영역으로 바로가기</a>
-
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="/" aria-label="IITP AI 문서 스튜디오 홈">
         <span class="brand-emblem" aria-hidden="true">
-          <svg viewBox="0 0 44 44" focusable="false">
-            <path class="emblem-frame" d="M13 5h18l8 8v18l-8 8H13l-8-8V13z"/>
-            <path class="emblem-face" d="M14 15h16v13H14zM18 11v4m8-4v4M11 19H7m30 0h-4"/>
-            <path class="emblem-signal" d="M18 21h.01M26 21h.01M18 25h8"/>
+          <svg viewBox="0 0 48 48" focusable="false">
+            <path class="emblem-petal petal-a" d="M24 5c8 0 14 4 14 10s-6 10-14 10S10 21 10 15 16 5 24 5Z"/>
+            <path class="emblem-petal petal-b" d="M43 25c0 8-4 14-10 14S23 33 23 25s4-14 10-14 10 6 10 14Z"/>
+            <path class="emblem-petal petal-c" d="M24 43c-8 0-14-4-14-10s6-10 14-10 14 4 14 10-6 10-14 10Z"/>
+            <circle cx="24" cy="24" r="7"/>
+            <path class="emblem-face" d="M21 23h.01M27 23h.01M21 27c2 1.5 4 1.5 6 0"/>
           </svg>
         </span>
-        <span class="brand-copy"><strong>IITP AI 문서 스튜디오</strong><small>CYBER DOCUMENT INTELLIGENCE</small></span>
+        <span class="brand-copy"><strong>IITP AI 문서 스튜디오</strong><small>EVIDENCE-LED DOCUMENT FLOW</small></span>
       </a>
       <div class="header-meta" aria-label="문서 변환 엔진 상태">
-        <span class="engine"><i aria-hidden="true"></i> KORDOC ONLINE</span>
-        <span class="format">NATIVE HWPX · SECURE FLOW</span>
+        <span class="engine"><i aria-hidden="true"></i> Kordoc 연결됨</span>
+        <span class="format">Native HWPX</span>
       </div>
     </div>
   </header>
 
-  <main id="workspace" class="studio-shell">
-    <aside class="studio-rail" aria-label="작업 단계">
-      <div class="rail-intro">
-        <span class="rail-index"><i aria-hidden="true"></i> AI DOCUMENT CORE</span>
-        <h1>근거를 지키는<br>지능형 문서 설계</h1>
-        <p>원문 분석부터 검토, 편집, HWPX 내보내기까지 하나의 정밀한 흐름으로 연결합니다.</p>
+  <main id="workspace">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-wash wash-one" aria-hidden="true"></div>
+      <div class="hero-wash wash-two" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="hero-kicker"><i aria-hidden="true"></i> 신뢰할 수 있는 AI 문서 설계</span>
+          <h1 id="heroTitle">근거는 선명하게,<br><span>문서는 유연하게.</span></h1>
+          <p>원본 HWPX의 맥락과 출처를 지키면서, 검토하고 고칠 수 있는 설명자료로 연결합니다. 분석부터 native HWPX 출력까지 한 흐름 안에서 완성하세요.</p>
+          <a class="hero-cta" href="#workbenchPanel">문서 작업 시작하기 <span aria-hidden="true">↘</span></a>
+          <p class="hero-assurance"><span aria-hidden="true">✓</span> 원문 기술 사실만 사용하고 미결정 값은 그대로 표시합니다.</p>
+        </div>
+
+        <div class="hero-visual" aria-label="원본 문서가 근거를 추적할 수 있는 편집 문서로 변환되는 AI 문서 흐름" role="img">
+          <svg class="ai-scene" viewBox="0 0 700 610" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="orbFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6fcff"/><stop offset=".34" stop-color="#b9f3ff"/><stop offset=".7" stop-color="#8b8cff"/><stop offset="1" stop-color="#4057ed"/></linearGradient>
+              <linearGradient id="arcFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#43d9ff" stop-opacity=".72"/><stop offset=".52" stop-color="#596ff3" stop-opacity=".2"/><stop offset="1" stop-color="#a97cf4" stop-opacity=".7"/></linearGradient>
+              <linearGradient id="pageFill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".96"/><stop offset="1" stop-color="#e7f6ff" stop-opacity=".82"/></linearGradient>
+              <radialGradient id="haloFill"><stop stop-color="#9aefff" stop-opacity=".72"/><stop offset=".55" stop-color="#9ca7ff" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+              <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="16"/></filter>
+              <filter id="cardShadow" x="-30%" y="-30%" width="180%" height="180%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#284ca0" flood-opacity=".18"/></filter>
+            </defs>
+            <path class="scene-blob" d="M105 169C173 49 355 21 510 76c137 48 184 187 111 311-75 127-241 180-387 136C75 475 26 309 105 169Z" fill="#dff7ff" opacity=".68"/>
+            <ellipse cx="359" cy="300" rx="230" ry="224" fill="url(#haloFill)"/>
+            <g class="orbit orbit-back">
+              <ellipse cx="363" cy="300" rx="235" ry="140" fill="none" stroke="url(#arcFill)" stroke-width="28" stroke-linecap="round" stroke-dasharray="335 120 185 300" transform="rotate(-18 363 300)" opacity=".5"/>
+              <ellipse cx="363" cy="300" rx="185" ry="244" fill="none" stroke="#fff" stroke-opacity=".65" stroke-width="2" stroke-dasharray="6 12" transform="rotate(35 363 300)"/>
+            </g>
+            <g class="source-page page-left" filter="url(#cardShadow)">
+              <path d="M62 170c0-14 10-24 24-24h124l33 34v161c0 14-10 24-24 24H86c-14 0-24-10-24-24Z" fill="url(#pageFill)" stroke="#fff" stroke-width="2"/>
+              <path d="m210 146 33 34h-21c-7 0-12-5-12-12Z" fill="#c8eaff"/><circle cx="94" cy="190" r="13" fill="#d7f7ee"/><path d="m88 190 4 4 8-9" fill="none" stroke="#18a783" stroke-width="3" stroke-linecap="round"/>
+              <rect x="117" y="182" width="74" height="8" rx="4" fill="#213d74" opacity=".8"/><rect x="92" y="226" width="111" height="6" rx="3" fill="#a9c7dc"/><rect x="92" y="244" width="88" height="6" rx="3" fill="#c1d8e7"/>
+              <rect x="92" y="278" width="46" height="42" rx="8" fill="#dcecff"/><rect x="148" y="278" width="55" height="42" rx="8" fill="#e9e1ff"/><text x="92" y="344" fill="#55708d" font-size="10" font-weight="700">SOURCE HWPX</text>
+            </g>
+            <g class="result-page page-right" filter="url(#cardShadow)">
+              <path d="M475 213c0-14 10-24 24-24h116c14 0 24 10 24 24v176c0 14-10 24-24 24H499c-14 0-24-10-24-24Z" fill="url(#pageFill)" stroke="#fff" stroke-width="2"/>
+              <rect x="504" y="222" width="58" height="10" rx="5" fill="#3d63e8"/><rect x="504" y="245" width="99" height="6" rx="3" fill="#b3c9dc"/><rect x="504" y="276" width="105" height="58" rx="11" fill="#e2f8ff"/>
+              <path d="M518 319v-17l15 8 16-21 18 15 26-21" fill="none" stroke="#536deb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><rect x="504" y="352" width="76" height="6" rx="3" fill="#b3c9dc"/><rect x="504" y="369" width="96" height="6" rx="3" fill="#d0deea"/>
+              <circle cx="608" cy="390" r="14" fill="#ffcf73"/><path d="m602 390 4 4 8-9" fill="none" stroke="#8a5a00" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <g class="core-wrap">
+              <circle cx="360" cy="295" r="116" fill="#7798ff" opacity=".16" filter="url(#softGlow)"/><circle cx="360" cy="295" r="92" fill="url(#orbFill)" stroke="#fff" stroke-opacity=".82" stroke-width="3"/>
+              <path d="M309 275c0-24 20-44 44-44h14c24 0 44 20 44 44v54c0 16-13 29-29 29h-44c-16 0-29-13-29-29Z" fill="#fff" fill-opacity=".88" stroke="#fff" stroke-width="3"/>
+              <path d="M344 231v-13m32 13v-13" stroke="#5269e9" stroke-width="5" stroke-linecap="round"/><circle cx="340" cy="290" r="7" fill="#233f82"/><circle cx="380" cy="290" r="7" fill="#233f82"/><circle cx="338" cy="288" r="2" fill="#fff"/><circle cx="378" cy="288" r="2" fill="#fff"/>
+              <path d="M341 318c12 10 26 10 38 0" fill="none" stroke="#5269e9" stroke-width="5" stroke-linecap="round"/><path d="M309 302h-13m115 0h13" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="360" cy="295" r="105" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-dasharray="2 10"/>
+            </g>
+            <g class="orbit-dots"><circle cx="238" cy="100" r="9" fill="#ff866f"/><circle cx="576" cy="147" r="7" fill="#7658e8"/><circle cx="575" cy="480" r="11" fill="#48d6ac"/><circle cx="175" cy="453" r="7" fill="#ffca67"/><circle cx="107" cy="407" r="4" fill="#426be8"/><circle cx="632" cy="304" r="4" fill="#24c8ee"/></g>
+            <path class="flow-line" d="M229 240c26-21 41-24 60-17M431 340c24 16 32 22 45 32" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="5 11"/>
+          </svg>
+          <span class="visual-tag tag-source"><i aria-hidden="true"></i> 원문 분석</span><span class="visual-tag tag-proof"><i aria-hidden="true"></i> 출처 연결</span><span class="visual-tag tag-export"><i aria-hidden="true"></i> HWPX 완성</span>
+        </div>
       </div>
+      <ul class="capability-row" aria-label="핵심 기능">
+        <li><span class="cap-icon parse" aria-hidden="true"><i></i></span><div><strong>소스 파싱</strong><small>HWPX 구조와 맥락 분석</small></div></li>
+        <li><span class="cap-icon trace" aria-hidden="true"><i></i></span><div><strong>근거 추적</strong><small>출처와 미결정 값 유지</small></div></li>
+        <li><span class="cap-icon edit" aria-hidden="true"><i></i></span><div><strong>편집 가능한 초안</strong><small>Markdown 직접 수정</small></div></li>
+        <li><span class="cap-icon export" aria-hidden="true"><i></i></span><div><strong>Native HWPX</strong><small>구조 검증 후 출력</small></div></li>
+      </ul>
+    </section>
 
-      <ol class="stepper" aria-label="진행 단계">
-        <li class="active" aria-current="step"><b>01</b><span><small>UPLOAD</small>문서 입력</span></li>
-        <li><b>02</b><span><small>REVIEW</small>근거 검토</span></li>
-        <li><b>03</b><span><small>EXPORT</small>편집·출력</span></li>
-      </ol>
-
-      <div class="rail-principles">
-        <span class="rail-label">TRUST PROTOCOL</span>
-        <ul>
-          <li>원문 기술 사실만 사용</li>
-          <li>출처와 미결정 값 유지</li>
-          <li>내보내기 전 구조 검증</li>
-        </ul>
+    <section id="workbenchPanel" class="workbench-section" aria-labelledby="workbenchTitle">
+      <div class="workbench-intro"><div><span class="eyebrow">AI DOCUMENT WORKBENCH</span><h2 id="workbenchTitle">필요한 문서 흐름을 선택하세요</h2></div><p>업로드한 원본은 역할별로 검증하고, 추출 결과를 확인한 다음 편집 가능한 초안으로 만듭니다.</p></div>
+      <div class="studio-shell">
+        <aside class="studio-rail" aria-label="작업 단계">
+          <div class="rail-intro"><span class="rail-index"><i aria-hidden="true"></i> DOCUMENT FLOW</span><h3>근거에서<br>완성본까지</h3><p>각 단계에서 내용을 직접 확인하고 되돌아갈 수 있습니다.</p></div>
+          <ol class="stepper" aria-label="진행 단계"><li class="active" aria-current="step"><b>01</b><span><small>UPLOAD</small>문서 입력</span></li><li><b>02</b><span><small>REVIEW</small>근거 검토</span></li><li><b>03</b><span><small>EXPORT</small>편집·출력</span></li></ol>
+          <div class="rail-principles"><span class="rail-label">TRUST PRINCIPLES</span><ul><li>원문 기술 사실만 사용</li><li>출처와 미결정 값 유지</li><li>내보내기 전 구조 검증</li></ul></div>
+        </aside>
+        <div class="workbench">
+          <nav class="workflow-tabs" aria-label="워크플로 선택">
+            <button class="tab active business" type="button" data-workflow="business" aria-pressed="true"><span class="tab-icon" aria-hidden="true">01</span><span class="tab-copy"><small>두 문서 통합</small><strong>사업설명자료</strong><em>기술수요조사서 + 기술기획보고서</em></span><span class="tab-state"><i aria-hidden="true"></i> 선택됨</span></button>
+            <button class="tab task" type="button" data-workflow="task" aria-pressed="false"><span class="tab-icon" aria-hidden="true">02</span><span class="tab-copy"><small>단일 근거 구성</small><strong>과제설명자료</strong><em>RFP 단일 근거</em></span><span class="tab-state"><i aria-hidden="true"></i> 선택</span></button>
+          </nav>
+          <section id="uploadStage" class="stage card" aria-labelledby="uploadTitle">
+            <div class="section-head"><div><span class="eyebrow">01 / SOURCE INTAKE</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2><p>분석에 사용할 원본 HWPX를 역할에 맞게 선택합니다.</p></div><span class="file-rule"><i aria-hidden="true"></i> HWPX · 각 30MB 이하</span></div>
+            <div id="uploadGrid" class="upload-grid"></div>
+            <div class="privacy-note"><span class="note-icon" aria-hidden="true">i</span><div><strong>참고자료 사용 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용합니다. 기술 사실·기관·기간·예산·수치는 생성 입력에서 제외됩니다.</span></div></div>
+            <div class="actions"><button id="resetBtn" class="button ghost" type="button">선택 초기화</button><button id="analyzeBtn" class="button primary" type="button" disabled>문서 분석하기 <span aria-hidden="true">→</span></button></div>
+          </section>
+          <section id="analysisStage" class="stage card hidden" aria-labelledby="analysisTitle">
+            <div class="section-head"><div><span class="eyebrow">02 / SOURCE REVIEW</span><h2 id="analysisTitle">추출 결과와 출처를 확인하세요</h2><p>초안을 만들기 전에 원문에서 읽은 내용과 문서 정보를 검토합니다.</p></div><span class="verified"><i aria-hidden="true"></i> 분석 완료</span></div>
+            <div id="previewGrid" class="preview-grid"></div><div class="actions"><button id="backBtn" class="button ghost" type="button">← 파일 바꾸기</button><button id="generateBtn" class="button primary" type="button">설명자료 초안 생성 <span aria-hidden="true">→</span></button></div>
+          </section>
+          <section id="editorStage" class="stage card hidden" aria-labelledby="editorTitle">
+            <div class="section-head"><div><span class="eyebrow">03 / EDIT &amp; EXPORT</span><h2 id="editorTitle">설명자료 초안</h2><p>내용을 직접 수정한 뒤 native HWPX로 내보냅니다.</p></div><span id="charCount" class="counter">0자</span></div>
+            <div class="editor-layout"><div class="editor-panel"><div class="editor-toolbar"><span>편집 가능한 MARKDOWN</span><small>현재 화면에서 편집 · 자동 저장 없음</small></div><textarea id="editor" spellcheck="false" aria-label="설명자료 Markdown 편집기"></textarea></div><aside aria-label="문서 근거와 확인 사항"><span class="aside-kicker">DOCUMENT NOTES</span><h3>출처</h3><div id="provenance"></div><h3>미결정 사항</h3><div id="unresolved"></div><p class="aside-note">다운로드할 때 현재 편집본을 native HWPX로 변환한 뒤 구조 검증과 재추출을 수행합니다.</p></aside></div>
+            <div class="actions"><button id="analysisBackBtn" class="button ghost" type="button">← 추출 결과</button><button id="downloadBtn" class="button primary" type="button">검증 후 HWPX 다운로드 <span aria-hidden="true">↓</span></button></div>
+          </section>
+        </div>
       </div>
-    </aside>
-
-    <section id="workbenchPanel" class="workbench" aria-label="문서 작업대">
-      <header class="desk-heading">
-        <div>
-          <span class="eyebrow cyan">AI DOCUMENT WORKBENCH <i aria-hidden="true"></i></span>
-          <h2>문서를 <span>정밀하게</span> 설계하세요</h2>
-        </div>
-        <p>근거 HWPX의 맥락을 읽고 출처가 연결된 편집 가능한 설명자료로 정리합니다.</p>
-      </header>
-
-      <nav class="workflow-tabs" aria-label="워크플로 선택">
-        <button class="tab active business" type="button" data-workflow="business" aria-pressed="true">
-          <span class="tab-icon" aria-hidden="true">01</span>
-          <span class="tab-copy"><small>DUAL-SOURCE SYNTHESIS</small><strong>사업설명자료</strong><em>기술수요조사서 + 기술기획보고서</em></span>
-          <span class="tab-state"><i aria-hidden="true"></i> 선택</span>
-        </button>
-        <button class="tab task" type="button" data-workflow="task" aria-pressed="false">
-          <span class="tab-icon" aria-hidden="true">02</span>
-          <span class="tab-copy"><small>SINGLE-SOURCE SYNTHESIS</small><strong>과제설명자료</strong><em>RFP 단일 근거</em></span>
-          <span class="tab-state"><i aria-hidden="true"></i> 선택</span>
-        </button>
-      </nav>
-
-      <section id="uploadStage" class="stage card" aria-labelledby="uploadTitle">
-        <div class="section-head">
-          <div><span class="eyebrow">01 / SECURE SOURCE INTAKE</span><h2 id="uploadTitle">두 개의 근거 문서를 올려주세요</h2><p>분석에 사용할 원본 HWPX를 역할에 맞게 선택합니다.</p></div>
-          <span class="file-rule"><i aria-hidden="true"></i> HWPX · 각 30MB 이하</span>
-        </div>
-        <div id="uploadGrid" class="upload-grid"></div>
-        <div class="privacy-note"><span class="note-icon" aria-hidden="true">!</span><div><strong>참고자료 사용 경계</strong><span>사업설명자료 HWP 참고본은 구조·문체·표 구성에만 활용합니다. 기술 사실·기관·기간·예산·수치는 생성 입력에서 제외됩니다.</span></div></div>
-        <div class="actions"><button id="resetBtn" class="button ghost" type="button">선택 초기화</button><button id="analyzeBtn" class="button primary" type="button" disabled>문서 분석하기 <span aria-hidden="true">→</span></button></div>
-      </section>
-
-      <section id="analysisStage" class="stage card hidden" aria-labelledby="analysisTitle">
-        <div class="section-head">
-          <div><span class="eyebrow">02 / SOURCE INTELLIGENCE</span><h2 id="analysisTitle">추출 결과와 출처를 확인하세요</h2><p>초안을 만들기 전에 원문에서 읽은 내용과 문서 정보를 검토합니다.</p></div>
-          <span class="verified"><i aria-hidden="true"></i> PARSE COMPLETE</span>
-        </div>
-        <div id="previewGrid" class="preview-grid"></div>
-        <div class="actions"><button id="backBtn" class="button ghost" type="button">← 파일 바꾸기</button><button id="generateBtn" class="button primary" type="button">설명자료 초안 생성 <span aria-hidden="true">→</span></button></div>
-      </section>
-
-      <section id="editorStage" class="stage card hidden" aria-labelledby="editorTitle">
-        <div class="section-head">
-          <div><span class="eyebrow">03 / PRECISION EDIT &amp; EXPORT</span><h2 id="editorTitle">설명자료 초안</h2><p>내용을 직접 수정한 뒤 native HWPX로 내보냅니다.</p></div>
-          <span id="charCount" class="counter">0자</span>
-        </div>
-        <div class="editor-layout">
-          <div class="editor-panel"><div class="editor-toolbar"><span>EDITABLE MARKDOWN</span><small>현재 화면에서 편집 · 자동 저장 없음</small></div><textarea id="editor" spellcheck="false" aria-label="설명자료 Markdown 편집기"></textarea></div>
-          <aside aria-label="문서 근거와 확인 사항"><span class="aside-kicker">DOCUMENT NOTES</span><h3>출처</h3><div id="provenance"></div><h3>미결정 사항</h3><div id="unresolved"></div><p class="aside-note">다운로드할 때 현재 편집본을 native HWPX로 변환한 뒤 구조 검증과 재추출을 수행합니다.</p></aside>
-        </div>
-        <div class="actions"><button id="analysisBackBtn" class="button ghost" type="button">← 추출 결과</button><button id="downloadBtn" class="button primary" type="button">검증 후 HWPX 다운로드 <span aria-hidden="true">↓</span></button></div>
-      </section>
     </section>
   </main>
-
   <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   <script type="module" src="/app.js"></script>
 </body>
