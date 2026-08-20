@@ -7,14 +7,17 @@ import { buildTrendAnalysis, generateBusinessTrend, generateTaskTrend } from '..
 const paths={demand:'/opt/data/IITP/기술수요조사서/01_양자내성암호_클라우드_보안_프레임워크_개발.hwpx',planning:'/opt/data/IITP/output/01_기술기획보고서_초안.hwpx',rfp:'/opt/data/IITP/output/01_양자내성암호_클라우드_보안_프레임워크_RFP_초안.hwpx',researchPlan:'/opt/data/IITP/output/01_기술기획보고서_초안.hwpx'};
 const out=join(process.cwd(),'tmp','e2e');await mkdir(out,{recursive:true});
 const load=async(role,path)=>parseDocument(basename(path),await readFile(path),role);
+const filteredBusinessSections={background:true,overview:false,goal:false,details:true,policy:false,budget:false,performance:false,custom:false};
+const filteredTaskSections={background:false,overview:false,goal:true,details:false,policy:false,budget:false,performance:true,custom:false};
 
 const demand=await load('demand',paths.demand),planning=await load('planning',paths.planning);
-const business=generateBusiness(demand,planning),businessFile=join(out,'workflow-a-business-explanation.hwpx');
+const business=generateBusiness(demand,planning,{sections:filteredBusinessSections}),businessFile=join(out,'workflow-a-filtered-business-explanation.hwpx');
 const businessOutput=await exportHwpx(business.markdown);await writeFile(businessFile,businessOutput.buffer);
+if(/^## \d+\. 사업목표$/m.test(business.markdown)||business.selectedSections.join(',')!=='background,details')throw Error('workflow A section filtering failed');
 
-const rfp=await load('rfp',paths.rfp),researchPlan=await load('researchPlan',paths.researchPlan),task=generateTask(rfp,researchPlan),taskFile=join(out,'workflow-b-combined-task-explanation.hwpx');
+const rfp=await load('rfp',paths.rfp),researchPlan=await load('researchPlan',paths.researchPlan),task=generateTask(rfp,researchPlan,{sections:filteredTaskSections}),taskFile=join(out,'workflow-b-filtered-task-explanation.hwpx');
 const taskOutput=await exportHwpx(task.markdown);await writeFile(taskFile,taskOutput.buffer);
-if(task.provenance.length!==2||!task.markdown.includes('연구개발계획서 추가 근거'))throw Error('workflow B did not combine both task sources');
+if(task.provenance.length!==2||!task.markdown.includes('연구개발계획서 추가 근거')||task.markdown.includes('## 1. 과제 개요')||task.selectedSections.join(',')!=='goal,performance')throw Error('workflow B did not combine sources with section filtering');
 
 const fetchedAt='2026-08-20T00:00:00.000Z';
 const trendSource={id:'rss-1',title:'검증용 ICT 기술 공개 소식',url:'https://news.google.com/rss/articles/e2e-fixture',publicationDate:'2026-08-19T00:00:00.000Z',description:'네트워크 없이 사용하는 결정적 E2E RSS 설명 fixture',sourceKind:'news-rss',publisher:'fixture',publisherUrl:null,fetchedAt,status:'available',error:null};

@@ -14,6 +14,23 @@ Kordoc으로 HWPX를 파싱하고, 원문 출처와 미결정 사항을 보존�
 
 기술동향 분석은 AI/인공지능, 반도체, 클라우드, 사이버보안, 양자정보통신, 6G/네트워크, 로봇/스마트제조, 데이터/소프트웨어 및 기타 ICT 분야를 지원합니다. 선택 HWPX는 기존 `/api/parse`와 Kordoc 경로를 그대로 사용합니다. 사업/과제 탭과 모드별 입력·분석 상태는 서로 분리되어 탭을 오가도 유지됩니다.
 
+## 출력 섹션 선택
+
+사업설명자료와 과제설명자료 모두 `문서 업로드` 및 `기술동향 분석` 모드에서 출력 섹션을 선택할 수 있습니다. 기본값은 추진배경, 사업개요, 사업목표, 상세 추진내용, 관련 주요 정책 및 국정과제, 예산현황, 주요성과 전체 선택입니다. `기타 입력`은 내용이 있을 때 사용자 입력/검토 메모로 포함되며, 검증된 출처 사실과 명확히 구분됩니다. 사업/과제 워크플로의 선택 상태는 서로 독립적이고, 같은 워크플로 안에서는 업로드/기술동향 모드를 바꿔도 유지됩니다. 모든 항목이 해제되고 기타 입력도 비어 있으면 프론트엔드와 API 모두 생성을 거부합니다.
+
+과제설명자료는 공통 선택 항목을 RFP 문맥에 맞게 다음처럼 표시합니다.
+
+| 공통 선택 항목 | 과제설명자료 제목 |
+| --- | --- |
+| 추진배경 | 현황 및 지원 필요성 |
+| 사업개요 | 과제 개요 |
+| 사업목표 | 해결해야 할 문제와 목표 |
+| 상세 추진내용 | 주요 개발내용과 필수 요구사항 |
+| 관련 주요 정책 및 국정과제 | 정책·국정과제 연계 |
+| 예산현황 | 기간·예산·추진체계 |
+| 주요성과 | 성과지표·시험 및 완료판정/기대효과 |
+| 기타 입력 | 사용자 입력/검토 메모 |
+
 두 흐름 모두 업로드 확장자·크기·ZIP 시그니처를 확인하고 Kordoc 추출 결과, 파일 SHA-256, 표 행·목차·페이지 메타데이터를 보여줍니다. 생성 결과는 Markdown 편집기에서 수정할 수 있습니다. 다운로드 요청 때 현재 편집본을 `markdownToHwpx()`로 변환하고 `validateHwpx()` 및 HWPX 재추출을 통과한 파일만 반환합니다.
 
 생성기는 특정 기술명을 하드코딩하지 않습니다. 사업설명자료 HWP 참고본은 `/opt/data/skills/research/iitp-business-explanation-materials`에 기록된 공통 목차·문체·표 원칙만 적용합니다. 참고본의 기술 사실, 기관, 기간, 예산, 수치는 생성 컨텍스트에 넣지 않습니다.
@@ -62,11 +79,11 @@ E2E 산출물은 `tmp/e2e/`에 생성됩니다. 이 디렉터리는 검증용 �
 ## API 요약
 
 - `POST /api/parse` — raw HWPX body, `X-Filename`, `X-Document-Role` 헤더
-- `POST /api/generate/business` — 파싱된 `demand`, `planning` JSON
-- `POST /api/generate/task` — 파싱된 필수 `rfp`, 선택 `researchPlan` JSON
+- `POST /api/generate/business` — 파싱된 `demand`, `planning`, 선택 `sections`, `customText` JSON
+- `POST /api/generate/task` — 파싱된 필수 `rfp`, 선택 `researchPlan`, `sections`, `customText` JSON
 - `POST /api/trends/analyze` — `field`, `topic`, 선택 `sourceDocument` JSON; RSS/공식 확인 링크, 상태, 분석 Markdown, 미해결 항목 반환
-- `POST /api/generate/business-trend` — `analysis` JSON → 근거 표시 사업설명자료
-- `POST /api/generate/task-trend` — `analysis` JSON → 근거 표시 과제설명자료
+- `POST /api/generate/business-trend` — `analysis`, 선택 `sections`, `customText` JSON → 근거 표시 사업설명자료
+- `POST /api/generate/task-trend` — `analysis`, 선택 `sections`, `customText` JSON → 근거 표시 과제설명자료
 - `POST /api/export` — 편집된 `markdown`, `filename` JSON; 검증된 HWPX 응답
 - `GET /api/health` — 상태 확인
 

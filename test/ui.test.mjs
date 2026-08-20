@@ -53,6 +53,11 @@ test('home exposes two dual-mode document workflows in a bright fluid AI studio'
   assert.match(html, /id="trendMarkdownPreview"/);
   assert.match(html, /id="trendSources"/);
   assert.match(html, /id="trendCreateBtn"/);
+  for (const label of ['추진배경','사업개요','사업목표','상세 추진내용','관련 주요 정책 및 국정과제','예산현황','주요성과','기타 입력']) assert.match(html,new RegExp(`>${label}<`));
+  assert.match(html, /id="sectionCount"[^>]*aria-live="polite"/);
+  assert.match(html, /id="selectAllSections"/);
+  assert.match(html, /id="clearAllSections"/);
+  assert.match(html, /id="customText"[^>]*maxlength="20000"/);
   assert.equal((html.match(/data-workflow=/g) || []).length, 2);
 });
 
@@ -85,6 +90,12 @@ test('workflow and mode state are kept independently', async () => {
   assert.match(script, /mode: 'upload'/);
   assert.match(script, /upload: \{ stage: 'intake'/);
   assert.match(script, /trend: \{ stage: 'intake'/);
+  assert.match(script, /output: \{ sections: defaultSections\(\), customText: '' \}/);
+  assert.match(script, /renderSectionSelector\(\)/);
+  assert.match(script, /output\.sections\.custom=true/);
+  assert.match(script, /출력할 섹션을 하나 이상 선택하거나 기타 입력을 작성해주세요/);
+  assert.match(script, /JSON\.stringify\(\{\.\.\.input,\.\.\.options\}\)/);
+  assert.match(script, /JSON\.stringify\(\{analysis:current\.analysis,\.\.\.options\}\)/);
   assert.match(script, /\/api\/trends\/analyze/);
   assert.match(script, /`\/api\/generate\/\$\{state\.workflow\}-trend`/);
 });

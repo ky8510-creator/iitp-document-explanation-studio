@@ -26,12 +26,12 @@ export function createServer(options = {}) {
       if (req.method === 'POST' && url.pathname === '/api/generate/business') {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
         if (!input.demand?.markdown || !input.planning?.markdown) return sendJson(res,{error:'기술수요조사서와 기술기획보고서가 모두 필요합니다.'},400);
-        return sendJson(res,generateBusiness(input.demand,input.planning));
+        return sendJson(res,generateBusiness(input.demand,input.planning,{sections:input.sections,customText:input.customText}));
       }
       if (req.method === 'POST' && url.pathname === '/api/generate/task') {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
         if (!input.rfp?.markdown) return sendJson(res,{error:'RFP가 필요합니다.'},400);
-        return sendJson(res,generateTask(input.rfp,input.researchPlan || null));
+        return sendJson(res,generateTask(input.rfp,input.researchPlan || null,{sections:input.sections,customText:input.customText}));
       }
       if (req.method === 'POST' && url.pathname === '/api/trends/analyze') {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
@@ -39,11 +39,11 @@ export function createServer(options = {}) {
       }
       if (req.method === 'POST' && url.pathname === '/api/generate/business-trend') {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
-        return sendJson(res,generateBusinessTrend(input.analysis));
+        return sendJson(res,generateBusinessTrend(input.analysis,{sections:input.sections,customText:input.customText}));
       }
       if (req.method === 'POST' && url.pathname === '/api/generate/task-trend') {
         const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
-        return sendJson(res,generateTaskTrend(input.analysis));
+        return sendJson(res,generateTaskTrend(input.analysis,{sections:input.sections,customText:input.customText}));
       }
       if (req.method === 'POST' && url.pathname === '/api/export') {
         const input=JSON.parse((await readBody(req,1_000_000)).toString('utf8'));

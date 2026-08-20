@@ -6,7 +6,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check lib/documents.mjs && node --check lib/trends.mjs && node --check public/app.js",
+    "check": "node --check server.mjs && node --check lib/sections.mjs && node --check lib/documents.mjs && node --check lib/trends.mjs && node --check public/app.js",
     "test": "node --test",
     "e2e": "node scripts/e2e.mjs"
   },

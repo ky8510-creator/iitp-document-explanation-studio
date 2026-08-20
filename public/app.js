@@ -1,6 +1,9 @@
 const $ = selector => document.querySelector(selector);
+const sectionKeys = ['background','overview','goal','details','policy','budget','performance','custom'];
+const defaultSections = () => Object.fromEntries(sectionKeys.map(key => [key,key!=='custom']));
 const makeSession = () => ({
   mode: 'upload',
+  output: { sections: defaultSections(), customText: '' },
   upload: { stage: 'intake', files: {}, documents: {}, result: null },
   trend: { stage: 'intake', field: 'ai', topic: '', file: null, document: null, analysis: null, result: null }
 });
@@ -30,6 +33,24 @@ function show(stage,index,remember=true) {
 }
 function selectedRoles() { const files=uploadState().files; return config[state.workflow].roles.filter(role=>files[role.key]); }
 function ready() { const files=uploadState().files; return config[state.workflow].roles.filter(role=>role.required).every(role=>files[role.key]); }
+function renderSectionSelector() {
+  const output=session().output;
+  document.querySelectorAll('[data-section]').forEach(input=>{input.checked=Boolean(output.sections[input.dataset.section])});
+  $('#customText').value=output.customText;
+  const count=sectionKeys.filter(key=>output.sections[key]).length;
+  $('#sectionCount').textContent=`${count}개 선택`;
+}
+function generationOptions() {
+  const output=session().output;
+  output.customText=$('#customText').value;
+  if(output.customText.trim())output.sections.custom=true;
+  if(!sectionKeys.some(key=>output.sections[key])&&!output.customText.trim()){
+    toast('출력할 섹션을 하나 이상 선택하거나 기타 입력을 작성해주세요.','error');
+    return null;
+  }
+  renderSectionSelector();
+  return {sections:{...output.sections},customText:output.customText};
+}
 
 function renderUploads() {
   const current=uploadState(),c=config[state.workflow]; $('#uploadTitle').textContent=c.title; const grid=$('#uploadGrid'); grid.classList.toggle('single',c.roles.length===1);
@@ -61,8 +82,9 @@ function renderPreviews() {
   const current=uploadState(),roles=selectedRoles(),grid=$('#previewGrid');grid.innerHTML=roles.map(role=>{const doc=current.documents[role.key];return `<article class="preview-card"><div class="preview-head"><b>${escapeHtml(doc.filename)}</b><small>${role.label} · SHA-256 ${escapeHtml(doc.sha256.slice(0,16))}…</small></div><pre>${escapeHtml(doc.textPreview)}</pre><div class="preview-meta"><span>${doc.bytes.toLocaleString()} bytes</span><span>${doc.metadata.pageCount||'-'} page metadata</span><span>${doc.fields.length} table rows</span><span>${doc.outline.length} headings</span></div></article>`}).join('');grid.style.gridTemplateColumns=roles.length===1?'1fr':'repeat(2,1fr)';
 }
 async function generateUpload() {
+  const options=generationOptions();if(!options)return;
   const button=$('#generateBtn');button.classList.add('busy');button.setAttribute('aria-busy','true');button.textContent='초안 구성 중…';
-  try { const current=uploadState(),input=Object.fromEntries(selectedRoles().map(role=>[role.key,current.documents[role.key]]).filter(([,doc])=>doc));const response=await request(`/api/generate/${state.workflow}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(input)});current.result=await response.json();renderEditor();show('editorStage',2);toast(`${config[state.workflow].output} 초안을 만들었습니다.`); }
+  try { const current=uploadState(),input=Object.fromEntries(selectedRoles().map(role=>[role.key,current.documents[role.key]]).filter(([,doc])=>doc));const response=await request(`/api/generate/${state.workflow}`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...input,...options})});current.result=await response.json();renderEditor();show('editorStage',2);toast(`${config[state.workflow].output} 초안을 만들었습니다.`); }
   catch(error){toast(error.message,'error')}finally{button.classList.remove('busy');button.removeAttribute('aria-busy');button.innerHTML='설명자료 초안 생성 <span>→</span>'}
 }
 
@@ -96,8 +118,9 @@ function renderTrendAnalysis() {
   $('#trendUnresolved').innerHTML=result.unresolved.map(item=>`<div class="notice">확인/조사 필요 · ${escapeHtml(item)}</div>`).join('');
 }
 async function createTrendMaterial() {
+  const options=generationOptions();if(!options)return;
   const current=trendState(),button=$('#trendCreateBtn');button.classList.add('busy');button.setAttribute('aria-busy','true');button.textContent='근거 표시 초안 구성 중…';
-  try { const response=await request(`/api/generate/${state.workflow}-trend`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({analysis:current.analysis})});current.result=await response.json();renderEditor();show('editorStage',2);toast(`${config[state.workflow].output} 초안을 만들었습니다.`); }
+  try { const response=await request(`/api/generate/${state.workflow}-trend`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({analysis:current.analysis,...options})});current.result=await response.json();renderEditor();show('editorStage',2);toast(`${config[state.workflow].output} 초안을 만들었습니다.`); }
   catch(error){toast(error.message,'error')}finally{button.classList.remove('busy');button.removeAttribute('aria-busy');button.innerHTML='설명자료 만들기 <span>→</span>'}
 }
 
@@ -108,7 +131,7 @@ async function download(){const result=currentResult(),button=$('#downloadBtn');
 
 function renderMode() {
   document.querySelectorAll('.mode-tab').forEach(tab=>{const active=tab.dataset.mode===session().mode;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active))});
-  renderUploads();renderTrendForm();const current=session().mode==='trend'?trendState():uploadState();
+  renderSectionSelector();renderUploads();renderTrendForm();const current=session().mode==='trend'?trendState():uploadState();
   if(current.stage==='editor'&&current.result){renderEditor();show('editorStage',2,false)}
   else if(session().mode==='trend'&&current.stage==='analysis'&&current.analysis){renderTrendAnalysis();show('trendAnalysisStage',1,false)}
   else if(session().mode==='upload'&&current.stage==='analysis'){renderPreviews();show('analysisStage',1,false)}
@@ -116,6 +139,10 @@ function renderMode() {
 }
 document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>{const active=x===tab;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));x.querySelector('.tab-state').lastChild.textContent=active?' 선택됨':' 선택'});state.workflow=tab.dataset.workflow;renderMode()});
 document.querySelectorAll('.mode-tab').forEach(tab=>tab.onclick=()=>{session().mode=tab.dataset.mode;renderMode()});
+document.querySelectorAll('[data-section]').forEach(input=>input.onchange=()=>{session().output.sections[input.dataset.section]=input.checked;renderSectionSelector()});
+$('#customText').oninput=e=>{const output=session().output;output.customText=e.target.value;if(e.target.value.trim())output.sections.custom=true;renderSectionSelector()};
+$('#selectAllSections').onclick=()=>{const output=session().output;for(const key of sectionKeys)output.sections[key]=key!=='custom'||Boolean(output.customText.trim());renderSectionSelector()};
+$('#clearAllSections').onclick=()=>{const output=session().output;for(const key of sectionKeys)output.sections[key]=false;output.customText='';renderSectionSelector()};
 $('#resetBtn').onclick=resetUpload;$('#analyzeBtn').onclick=analyzeUpload;$('#backBtn').onclick=()=>show('uploadStage',0);$('#generateBtn').onclick=generateUpload;
 $('#trendField').onchange=e=>{trendState().field=e.target.value;trendState().analysis=null;trendState().result=null};$('#trendTopic').oninput=e=>{trendState().topic=e.target.value;trendState().analysis=null;trendState().result=null;$('#trendAnalyzeBtn').disabled=!e.target.value.trim()};
 $('#trendFile').onchange=e=>chooseTrendFile(e.target.files[0]);$('#trendResetBtn').onclick=resetTrend;$('#trendAnalyzeBtn').onclick=analyzeTrend;$('#trendBackBtn').onclick=()=>show('trendStage',0);$('#trendCreateBtn').onclick=createTrendMaterial;
