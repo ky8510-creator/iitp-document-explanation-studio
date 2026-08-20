@@ -28,9 +28,9 @@ export function createServer() {
         return sendJson(res,generateBusiness(input.demand,input.planning));
       }
       if (req.method === 'POST' && url.pathname === '/api/generate/task') {
-        const input=JSON.parse((await readBody(req,1_000_000)).toString('utf8'));
+        const input=JSON.parse((await readBody(req,2_000_000)).toString('utf8'));
         if (!input.rfp?.markdown) return sendJson(res,{error:'RFP가 필요합니다.'},400);
-        return sendJson(res,generateTask(input.rfp));
+        return sendJson(res,generateTask(input.rfp,input.researchPlan || null));
       }
       if (req.method === 'POST' && url.pathname === '/api/export') {
         const input=JSON.parse((await readBody(req,1_000_000)).toString('utf8'));

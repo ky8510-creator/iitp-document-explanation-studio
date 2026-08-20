@@ -5,7 +5,7 @@ Kordoc으로 HWPX를 파싱하고, 원문 출처와 미결정 사항을 보존�
 ## 지원 워크플로
 
 - A — 기술수요조사서 HWPX + 기술기획보고서 HWPX → 사업설명자료
-- B — RFP HWPX → 과제설명자료
+- B — RFP HWPX + 연구개발계획서 HWPX(선택) → 과제설명자료
 
 두 흐름 모두 업로드 확장자·크기·ZIP 시그니처를 확인하고 Kordoc 추출 결과, 파일 SHA-256, 표 행·목차·페이지 메타데이터를 보여줍니다. 생성 결과는 Markdown 편집기에서 수정할 수 있습니다. 다운로드 요청 때 현재 편집본을 `markdownToHwpx()`로 변환하고 `validateHwpx()` 및 HWPX 재추출을 통과한 파일만 반환합니다.
 
@@ -48,7 +48,7 @@ E2E 산출물은 `tmp/e2e/`에 생성됩니다. 이 디렉터리는 검증용 �
 
 - `POST /api/parse` — raw HWPX body, `X-Filename`, `X-Document-Role` 헤더
 - `POST /api/generate/business` — 파싱된 `demand`, `planning` JSON
-- `POST /api/generate/task` — 파싱된 `rfp` JSON
+- `POST /api/generate/task` — 파싱된 필수 `rfp`, 선택 `researchPlan` JSON
 - `POST /api/export` — 편집된 `markdown`, `filename` JSON; 검증된 HWPX 응답
 - `GET /api/health` — 상태 확인
 

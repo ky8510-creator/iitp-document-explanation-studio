@@ -22,6 +22,7 @@ test('home exposes only the two real document workflows in a bright fluid AI stu
   assert.match(html, /EDIT &amp; EXPORT/);
   assert.match(html, />사업설명자료</);
   assert.match(html, />과제설명자료</);
+  assert.match(html, /RFP \+ 연구개발계획서\(선택\)/);
   assert.match(html, /native HWPX/);
   assert.match(html, /소스 파싱/);
   assert.match(html, /근거 추적/);
@@ -55,4 +56,15 @@ test('dynamic document values remain escaped before HTML insertion', async () =>
   assert.match(script, /escapeHtml\(doc\.textPreview\)/);
   assert.match(script, /escapeHtml\(x\.filename\)/);
   assert.match(script, /escapeHtml\(x\.role\)/);
+});
+
+test('task upload configuration distinguishes required and optional selected sources', async () => {
+  const script = await publicFile('app.js');
+  assert.match(script, /key:'rfp', label:'RFP', required:true/);
+  assert.match(script, /key:'researchPlan', label:'연구개발계획서', required:false/);
+  assert.match(script, /선택 · 연구목표·연구내용·추진체계·성과·기간·예산의 추가 근거/);
+  assert.match(script, /filter\(role=>role\.required\)\.every/);
+  assert.match(script, /for \(const role of selectedRoles\(\)\)/);
+  assert.match(script, /const roles=selectedRoles\(\)/);
+  assert.match(script, /Object\.fromEntries\(selectedRoles\(\)/);
 });
