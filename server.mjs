@@ -59,4 +59,7 @@ export function createServer() {
   });
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) createServer().listen(port,'0.0.0.0',()=>console.log(`IITP document app listening on http://0.0.0.0:${port}`));
+const app = createServer();
+export default app;
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) app.listen(port,'0.0.0.0',()=>console.log(`IITP document app listening on http://0.0.0.0:${port}`));
