@@ -8,7 +8,7 @@ test('home exposes only the two real document workflows in a bright fluid AI stu
   const html = await publicFile('index.html');
   const css = await publicFile('styles.css');
   assert.match(html, /<title>IITP AI 문서 플로우 스튜디오<\/title>/);
-  assert.match(html, /AI 기반 사업·과제<br>핵심정보 분석 및<br>/);
+  assert.match(html, /AI 기반 사업·과제<br>핵심정보 분석으로<br>/);
   assert.match(html, /부처 보고자료 생성 지원/);
   assert.doesNotMatch(html, /근거는 선명하게|문서는 유연하게/);
   assert.match(html, /EVIDENCE-LED DOCUMENT FLOW/);
